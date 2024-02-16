@@ -19,7 +19,7 @@
 
 #
 
-<h3>Вариант №5. Поиск товаров на Яндекс-Маркете.(https://market.yandex.ru)</h3>
+<h3>Вариант №5. Яндекс-Маркет.(https://market.yandex.ru)</h3>
 
 <h4>Задачи:</h4>
 
@@ -27,9 +27,78 @@
 
 2. Спроектировать архитектуру БД для выбранной темы в виде ER-diagram в нотации IDEF1X или UML.
 
+## Сущности и атрибуты:
+
+1. **Пользователь (User)**:
+   - user_id (UUID SERIAL PRIMARY KEY)
+   - username (VARCHAR)
+   - password (CHKPASS)
+   - name (VARCHAR)
+   - surname (VARCHAR)
+   - phone_number (VARCHAR)
+   - address (VARCHAR)
+   - plus_subscriber (BOOLEAN)
+
+2. **Заказ (Order)**:
+   - order_id (UUID SERIAL PRIMARY KEY)
+   - user_id (Foreign Key INT)
+   - order_state_id (Foreign Key INT)
+   - shop_id (Foreign Key INT)
+
+3. **Статус заказа (OrderState)**:
+   - order_state_id (UUID SERIAL PRIMARY KEY)
+   - status (TEXT)
+
+4. **Магазин (Shop)**:
+   - shop_id (UUID SERIAL PRIMARY KEY)
+   - name (VARCHAR)
+   - address (VARCHAR)
+   - email (VARCHAR)
+   - phone_number (VARCHAR)
+   - rating_id (Foreign Key INT)
+
+5. **Товар в магазине (ShopProduct)**:
+   - shop_product_id (UUID SERIAL PRIMARY KEY)
+   - amount (INT)
+   - shop_id (Foreign Key INT)
+   - product_id (Foreign Key INT)
+
+6. **Единица заказа (OrderUnit)**:
+   - order_unit_id (UUID SERIAL PRIMARY KEY)
+   - amount (INT)
+   - order_id (Foreign Key INT)
+   - shop_product_id (Foreign Key INT)
+
+7. **Товар (Product)**:
+   - product_id (UUID SERIAL PRIMARY KEY)
+   - name (VARCHAR)
+   - description (TEXT)
+   - price (NUMERIC)
+   - product_category_id (Foreign Key INT)
+   - rating_id (Foreign Key INT)
+
+8. **Категория товара (Category)**:
+   - category_id (UUID SERIAL PRIMARY KEY)
+   - name (TEXT)
+
+9. **Опции категории товара (CategoryOption)**:
+   - category_option_id (UUID SERIAL PRIMARY KEY)
+   - name (TEXT)
+   - category_id (Foreign Key INT)
+
+10. **Опции товара (ProductOption)**:
+    - product_option_id (UUID SERIAL PRIMARY KEY)
+    - value (TEXT)
+    - product_id (Foreign Key INT)
+    - category_option_id (Foreign Key INT)
+
+11. **Рейтинг (Rating)**:
+    - rating_id (UUID SERIAL PRIMARY KEY)
+    - rating_average (NUMERIC)
+    - rating_votes (INT)
 
 
-### Обоснование нахождения модели данных в 3НФ
+## Обоснование нахождения модели данных в 3НФ
 
 1НФ: Каждый кортеж отношения содержит только одно значение для каждого из атрибутов.
 
@@ -44,7 +113,6 @@
 ```
 @startuml
 title Яндекс-Маркет
-
 hide circle
 skinparam linetype ortho
 
@@ -67,7 +135,6 @@ entity Order {
     order_state_id (Foreign Key) INT
     shop_id (Foreign Key) INT
 }
-
 
 entity OrderState {
     order_state_id UUID SERIAL PRIMARY KEY
@@ -160,6 +227,5 @@ Order }o-up-|| User
 OrderUnit }|-up-|| Order
 OrderUnit }o--|| ShopProduct
 Order }o-left-|| OrderState
-
 @enduml
 ```

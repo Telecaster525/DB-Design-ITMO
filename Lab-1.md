@@ -45,11 +45,7 @@
    - order_state_id (Foreign Key INT)
    - shop_id (Foreign Key INT)
 
-3. **Статус заказа (OrderState)**:
-   - order_state_id (UUID SERIAL PRIMARY KEY)
-   - status (TEXT)
-
-4. **Магазин (Shop)**:
+3. **Магазин (Shop)**:
    - shop_id (UUID SERIAL PRIMARY KEY)
    - name (VARCHAR)
    - address (VARCHAR)
@@ -58,17 +54,19 @@
    - rating (NUMERIC)
    - rating_votes (INT)
 
-5. **Единица заказа (OrderUnit)**:
+4. **Единица заказа (OrderUnit)**:
    - order_unit_id (UUID SERIAL PRIMARY KEY)
    - amount (INT)
    - order_id (Foreign Key INT)
-   - shop_product_id (Foreign Key INT)
+   - product_id (Foreign Key INT)
 
 6. **Товар (Product)**:
    - product_id (UUID SERIAL PRIMARY KEY)
    - name (VARCHAR)
    - description (TEXT)
    - price (NUMERIC)
+   - rating (NUMERIC)
+   - rating_votes (INT)
    - product_category_id (Foreign Key INT)
    - rating_id (Foreign Key INT)
 
@@ -101,7 +99,7 @@ title Яндекс-Маркет
 hide circle
 skinparam linetype ortho
 
-entity User {
+entity Users {
     user_id UUID SERIAL PRIMARY KEY
     --
     username VARCHAR
@@ -113,7 +111,7 @@ entity User {
     plus_subscriber BOOLEAN
 }
 
-entity Order {
+entity Orders {
     order_id UUID SERIAL PRIMARY KEY
     --
     user_id (Foreign Key) INT
@@ -121,61 +119,62 @@ entity Order {
     shop_id (Foreign Key) INT
 }
 
-entity Shop {
+entity Shops {
     shop_id UUID SERIAL PRIMARY KEY
     --
     name VARCHAR
     address VARCHAR
     email VARCHAR
     phone_number VARCHAR
+    rating NUMERIC
     --
     rating_id (Foreign Key) INT
 }
 
-entity OrderUnit {
+entity OrderUnits {
     order_unit_id UUID SERIAL PRIMARY KEY
     --
     amount INT
     --
     order_id (Foreign Key) INT
-    shop_product_id (Foreign Key) INT
+    product_id (Foreign Key) INT
 }
 
-entity Product {
+entity Products {
     product_id UUID SERIAL PRIMARY KEY
     --
     name VARCHAR
     description TEXT
     price NUMERIC
+    rating NUMERIC
+    rating_votes INT
     --
-    product_category_id (Foreign Key) INT
+    category_id (Foreign Key) INT
     rating_id (Foreign Key) INT
 }
 
-entity Category {
+entity Categories {
     category_id UUID SERIAL PRIMARY KEY
     --
     name TEXT
 }
 
-entity ProductOption {
+entity ProductOptions {
     product_option_id UUID SERIAL PRIMARY KEY
     --
     value TEXT
     --
     product_id (Foreign Key) INT
-    category_option_id (Foreign Key) INT
 }
 
-
-Product }o-right-|| Category
-Category ||--o{ ProductOption
-ProductOption }o--o{ Product
-Shop ||--o{ Product
-Order }o--|| Shop
-Order }o-up-|| User
-OrderUnit }|-up-|| Order
-OrderUnit }o--|| Product
+Products }o-right-|| Categories
+Categories ||--o{ ProductOptions
+ProductOptions }o--o{ Products
+Shops ||--o{ Products
+Orders }o--|| Shops
+Orders }o-up-|| Users
+OrderUnits }|-up-|| Orders
+OrderUnits }o--|| Products
 
 @enduml
 ```

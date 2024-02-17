@@ -55,21 +55,16 @@
    - address (VARCHAR)
    - email (VARCHAR)
    - phone_number (VARCHAR)
-   - rating_id (Foreign Key INT)
+   - rating (NUMERIC)
+   - rating_votes (INT)
 
-5. **Товар в магазине (ShopProduct)**:
-   - shop_product_id (UUID SERIAL PRIMARY KEY)
-   - amount (INT)
-   - shop_id (Foreign Key INT)
-   - product_id (Foreign Key INT)
-
-6. **Единица заказа (OrderUnit)**:
+5. **Единица заказа (OrderUnit)**:
    - order_unit_id (UUID SERIAL PRIMARY KEY)
    - amount (INT)
    - order_id (Foreign Key INT)
    - shop_product_id (Foreign Key INT)
 
-7. **Товар (Product)**:
+6. **Товар (Product)**:
    - product_id (UUID SERIAL PRIMARY KEY)
    - name (VARCHAR)
    - description (TEXT)
@@ -77,26 +72,15 @@
    - product_category_id (Foreign Key INT)
    - rating_id (Foreign Key INT)
 
-8. **Категория товара (Category)**:
+7. **Категория товара (Category)**:
    - category_id (UUID SERIAL PRIMARY KEY)
    - name (TEXT)
 
-9. **Опции категории товара (CategoryOption)**:
-   - category_option_id (UUID SERIAL PRIMARY KEY)
-   - name (TEXT)
-   - category_id (Foreign Key INT)
-
-10. **Опции товара (ProductOption)**:
+8. **Опции товара (ProductOption)**:
     - product_option_id (UUID SERIAL PRIMARY KEY)
     - value (TEXT)
     - product_id (Foreign Key INT)
     - category_option_id (Foreign Key INT)
-
-11. **Рейтинг (Rating)**:
-    - rating_id (UUID SERIAL PRIMARY KEY)
-    - rating_average (NUMERIC)
-    - rating_votes (INT)
-
 
 ## Обоснование нахождения модели данных в 3НФ
 

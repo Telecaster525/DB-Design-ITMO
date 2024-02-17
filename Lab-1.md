@@ -113,6 +113,7 @@
 ```
 @startuml
 title Яндекс-Маркет
+
 hide circle
 skinparam linetype ortho
 
@@ -136,15 +137,6 @@ entity Order {
     shop_id (Foreign Key) INT
 }
 
-entity OrderState {
-    order_state_id UUID SERIAL PRIMARY KEY
-    --
-    status TEXT
-}
-note left of OrderState::status
-  ОПЛАЧЕН | СОБИРАЕТСЯ | ОТПРАВЛЕН | ДОСТАВЛЕН | ОТМЕНЁН
-end note
-
 entity Shop {
     shop_id UUID SERIAL PRIMARY KEY
     --
@@ -154,15 +146,6 @@ entity Shop {
     phone_number VARCHAR
     --
     rating_id (Foreign Key) INT
-}
-
-entity ShopProduct {
-    shop_product_id UUID SERIAL PRIMARY KEY
-    --
-    amount INT
-    --
-    shop_id (Foreign Key) INT
-    product_id (Foreign Key) INT
 }
 
 entity OrderUnit {
@@ -191,14 +174,6 @@ entity Category {
     name TEXT
 }
 
-entity CategoryOption {
-    category_option_id UUID SERIAL PRIMARY KEY
-    --
-    name TEXT
-    --
-    category_id (Foreign Key) INT
-}
-
 entity ProductOption {
     product_option_id UUID SERIAL PRIMARY KEY
     --
@@ -208,24 +183,15 @@ entity ProductOption {
     category_option_id (Foreign Key) INT
 }
 
-entity Rating {
-    rating_id UUID SERIAL PRIMARY KEY
-    --
-    rating_average NUMERIC
-    rating_votes INT
-}
 
 Product }o-right-|| Category
-Product }o-left-|| Rating
-Category ||--o{ CategoryOption
-CategoryOption ||--o{ ProductOption
+Category ||--o{ ProductOption
 ProductOption }o--o{ Product
-Shop ||--o{ ShopProduct
-ShopProduct }o-down-|| Product
+Shop ||--o{ Product
 Order }o--|| Shop
 Order }o-up-|| User
 OrderUnit }|-up-|| Order
-OrderUnit }o--|| ShopProduct
-Order }o-left-|| OrderState
+OrderUnit }o--|| Product
+
 @enduml
 ```

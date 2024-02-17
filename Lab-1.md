@@ -168,8 +168,7 @@ entity ProductOptions {
 }
 
 Products }o-right-|| Categories
-Categories ||--o{ ProductOptions
-ProductOptions }o--o{ Products
+ProductOptions }o-up-o{ Products
 Shops ||--o{ Products
 Orders }o--|| Shops
 Orders }o-up-|| Users

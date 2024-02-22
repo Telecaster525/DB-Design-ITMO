@@ -148,7 +148,7 @@ entity Products {
     rating_votes INT
     --
     category_id (Foreign Key) INT
-    rating_id (Foreign Key) INT
+    product_option_id (Foreign Key) INT
 }
 
 entity Categories {

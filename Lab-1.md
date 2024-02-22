@@ -115,7 +115,7 @@ entity Orders {
     order_id UUID SERIAL PRIMARY KEY
     --
     user_id (Foreign Key) INT
-    order_state_id (Foreign Key) INT
+    order_unit_id (Foreign Key) INT
     shop_id (Foreign Key) INT
 }
 

@@ -127,8 +127,6 @@ entity Shops {
     email VARCHAR
     phone_number VARCHAR
     rating NUMERIC
-    --
-    rating_id (Foreign Key) INT
 }
 
 entity OrderUnits {

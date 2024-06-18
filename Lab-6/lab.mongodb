@@ -1,0 +1,198 @@
+db.createCollection("categories");
+db.createCollection("products");
+db.createCollection("order_units");
+db.createCollection("users");
+db.createCollection("shops");
+db.createCollection("orders");
+
+db.products.createIndex({ category_id: 1, price: 1 });
+
+db.categories.insertMany([
+  { _id: UUID(), name: "Electronics" },
+  { _id: UUID(), name: "Clothing" },
+  { _id: UUID(), name: "Food" },
+  { _id: UUID(), name: "Instruments" },
+  { _id: UUID(), name: "Sport environment" },
+  { _id: UUID(), name: "Medicines" },
+]);
+
+db.products.insertMany([
+  {
+    _id: UUID(),
+    name: "Smartphone",
+    description: "High-end smartphone",
+    price: 999.99,
+    rating: 4.5,
+    weight: 1,
+    rating_votes: 100,
+    category_id: db.categories.findOne({ name: "Electronics" })._id,
+    options: [
+      { _id: UUID(), value: "Color: Black" },
+      { _id: UUID(), value: "Storage: 128GB" }
+    ]
+  },
+  {
+    _id: UUID(),
+    name: "Laptop",
+    description: "Slim and powerful laptop for professional use",
+    price: 1499.99,
+    rating: 4.7,
+    rating_votes: 85,
+    category_id: db.categories.findOne({ name: "Electronics" })._id,
+    options: [
+      { _id: UUID(), value: "Color: Silver" },
+      { _id: UUID(), value: "Processor: Intel Core i7" }
+    ]
+  },
+  {
+    _id: UUID(),
+    name: "Running Shoes",
+    description: "Comfortable running shoes with breathable fabric",
+    price: 79.99,
+    rating: 4.2,
+    rating_votes: 120,
+    category_id: db.categories.findOne({ name: "Clothing" })._id,
+    options: [
+      { _id: UUID(), value: "Size: US 9" },
+      { _id: UUID(), value: "Color: Blue" }
+    ]
+  },
+  {
+    _id: UUID(),
+    name: "Electric Guitar",
+    description: "Classic electric guitar with great sound quality",
+    price: 599.99,
+    rating: 4.8,
+    rating_votes: 65,
+    category_id: db.categories.findOne({ name: "Instruments" })._id,
+    options: [
+      { _id: UUID(), value: "Color: Sunburst" },
+      { _id: UUID(), value: "Number of Strings: 6" }
+    ]
+  },
+  {
+    _id: UUID(),
+    name: "Fitness Tracker",
+    description: "Advanced fitness tracker with heart rate monitoring",
+    price: 129.99,
+    rating: 4.4,
+    rating_votes: 90,
+    category_id: db.categories.findOne({ name: "Sport environment" })._id,
+    options: [
+      { _id: UUID(), value: "Color: Red" },
+      { _id: UUID(), value: "Waterproof: Yes" }
+    ]
+  },
+  {
+    _id: UUID(),
+    name: "Chocolate Bar",
+    description: "Premium dark chocolate bar",
+    price: 9.99,
+    rating: 4.9,
+    rating_votes: 150,
+    category_id: db.categories.findOne({ name: "Food" })._id,
+    options: [
+      { _id: UUID(), value: "Weight: 100g" },
+      { _id: UUID(), value: "Cocoa Content: 70%" }
+    ]
+  },
+  {
+    _id: UUID(),
+    name: "Piano",
+    description: "Grand piano for professional musicians",
+    price: 4999.99,
+    rating: 4.6,
+    rating_votes: 40,
+    category_id: db.categories.findOne({ name: "Instruments" })._id,
+    options: [
+      { _id: UUID(), value: "Color: Black" },
+      { _id: UUID(), value: "Number of Keys: 88" }
+    ]
+  },
+  {
+    _id: UUID(),
+    name: "First Aid Kit",
+    description: "Compact first aid kit for emergencies",
+    price: 29.99,
+    rating: 4.3,
+    rating_votes: 75,
+    category_id: db.categories.findOne({ name: "Medicines" })._id,
+    options: [
+      { _id: UUID(), value: "Contents: Bandages, Antiseptic Wipes, Scissors" },
+      { _id: UUID(), value: "Case: Waterproof" }
+    ]
+  },
+  {
+    _id: UUID(),
+    name: "Soccer Ball",
+    description: "High-quality soccer ball for professional play",
+    price: 39.99,
+    rating: 4.5,
+    rating_votes: 110,
+    category_id: db.categories.findOne({ name: "Sport environment" })._id,
+    options: [
+      { _id: UUID(), value: "Size: 5" },
+      { _id: UUID(), value: "Material: Synthetic Leather" }
+    ]
+  },
+  {
+    _id: UUID(),
+    name: "Summer Dress",
+    description: "Stylish and comfortable summer dress",
+    price: 49.99,
+    rating: 4.0,
+    rating_votes: 60,
+    category_id: db.categories.findOne({ name: "Clothing" })._id,
+    options: [
+      { _id: UUID(), value: "Size: Medium" },
+      { _id: UUID(), value: "Color: Floral Print" }
+    ]
+  }
+]);
+
+db.users.insertMany([
+  {
+    _id: UUID(),
+    username: "john_doe",
+    password: "password123",
+    name: "John",
+    surname: "Doe",
+    phone_number: "+123456789",
+    address: "123 Main Street, City",
+    plus_subscriber: true
+  },
+  {
+    _id: UUID(),
+    username: "jane_smith",
+    password: "secret456",
+    name: "Jane",
+    surname: "Smith",
+    phone_number: "+987654321",
+    address: "456 Oak Avenue, Town",
+    plus_subscriber: false
+  }
+]);
+
+db.order_units.insertMany([
+  {
+    _id: UUID(),
+    amount: 2,
+    product_id: db.products.findOne({ name: "Smartphone" })._id
+  },
+  {
+    _id: UUID(),
+    amount: 1,
+    product_id: db.products.findOne({ name: "Laptop" })._id
+  }
+]);
+
+db.createView("user_orders", "users", [
+  {
+    $lookup: {
+      from: "orders",
+      localField: "_id",
+      foreignField: "user_id",
+      as: "orders"
+    }
+  }
+]);
